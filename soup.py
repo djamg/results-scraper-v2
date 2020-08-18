@@ -2,18 +2,33 @@ import requests
 from bs4 import BeautifulSoup
 
 
-headers = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'GET',
-    'Access-Control-Allow-Headers': 'Content-Type',
-    'Access-Control-Max-Age': '3600',
-    'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'
-}
+def loaded(url):
+    lst = []
+    page = url
+    soup = BeautifulSoup(page, 'lxml')
+    selectionForSoup = soup.select('tbody tr')
+    for elements in selectionForSoup:
+        for x in elements.find_all('td')[10]:
+            lst.append(x.text)
+            # print(x.text)
 
-url = "http://results.drait.in/"
+        # print(elements.text)
+    # print(selectionForSoup[3].find('td').text)
+    print(lst)
+    resultCheck(lst)
 
 
-def loaded():
-    req = requests.get(url, headers)
-    soup = BeautifulSoup(req.content, 'html.parser')
-    print(soup.prettify())
+def resultCheck(lst):
+    if "F" in lst:
+        print("You have failed :( Better Luck Next TIME!")
+    else:
+        print("Congrats! You have cleared everything!")
+
+
+# for head in soup.select('thead tr'):
+#     row_text = [x.text for x in head.find_all('th')]
+#     print(', '.join(row_text))
+
+# for row in soup.select('tbody tr'):
+#     row_text = [x.text for x in row.find_all('td')]
+#     print(', '.join(row_text))
